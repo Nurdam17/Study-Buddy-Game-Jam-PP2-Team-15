@@ -1,4 +1,4 @@
-import pygame, datetime
+import pygame
 import draw_button
 pygame.init()
 
@@ -21,11 +21,11 @@ club_page = False
 theatre_page = False
 paused = False
 pullup = False
-moving_down_pullup = False
 end_page = False
 hack_notify = False
+paused = False
 
-
+#------------------------------------------------------------------------------------------------------------------
 #images
 heart_img = pygame.transform.scale(pygame.image.load("images/icons/heart.png"), (45, 45))
 brain_img = pygame.transform.scale(pygame.image.load("images/icons/brain.png"), (45, 45))
@@ -35,9 +35,8 @@ club_icon = pygame.transform.scale(pygame.image.load("images/map/club.png"), (10
 theatre_icon = pygame.transform.scale(pygame.image.load("images/map/theatre.png"), (300, 180))
 dorm_icon = pygame.transform.scale(pygame.image.load("images/map/dorm.png"), (270, 150))
 pause_icon = pygame.transform.scale(pygame.image.load("images/buttons/pause.png"), (60, 60))
-tasklist_icon = pygame.transform.scale(pygame.image.load("images/buttons/taskslist.png"), (60, 60))
 map_icon = pygame.transform.scale(pygame.image.load("images/icons/map_icon.png"), (60, 60))
-gym_icon = pygame.transform.scale(pygame.image.load("images/icons/gym_icon.png"), (270, 150))
+gym_icon = pygame.transform.scale(pygame.image.load("images/map/gym_icon.png"), (270, 150))
 
 #Backgrounds
 uni_img1 = pygame.transform.scale(pygame.image.load("images/backgrounds/uni1.png"), (1700, 1465))
@@ -48,6 +47,33 @@ dorm_background = pygame.transform.scale(pygame.image.load("images/backgrounds/m
 menu_background = pygame.transform.scale(pygame.image.load("images/backgrounds/main_blur.png"), (1700, 1465))
 gym_background = pygame.transform.scale(pygame.image.load("images/backgrounds/gym.png"), (1700, 1465))
 gym_for_games = pygame.transform.scale(pygame.image.load("images/backgrounds/gym_for_games.png"), (1700, 1465))
+club_bg = pygame.transform.scale(pygame.image.load("images/backgrounds/club_back.png"), (1700, 1465))
+theatre_bg = pygame.transform.scale(pygame.image.load("images/backgrounds/theatre.png"), (1700, 1000))
+
+#For Gym
+dumbell_5kg = pygame.transform.scale(pygame.image.load("images/icons/5kg.png"), (45, 45))
+dumbell_10kg = pygame.transform.scale(pygame.image.load("images/icons/10kg.png"), (70, 70))
+dumbell_15kg = pygame.transform.scale(pygame.image.load("images/icons/15kg.png"), (94, 94))
+gant_bot = pygame.transform.scale(pygame.image.load("images/icons/gant_bot.png"), (400, 450))
+box_img = pygame.transform.scale(pygame.image.load("images/icons/box.png"), (120, 550))
+tournique_img = pygame.transform.scale(pygame.image.load("images/icons/tourniquet.png"), (400, 200))
+
+
+#Images of buttons for menu page
+start_img = pygame.transform.scale(pygame.image.load("images/buttons/start.png"), (300, 100))
+exit_img = pygame.transform.scale(pygame.image.load("images/buttons/exit.png"), (300, 100))
+resume_img = pygame.transform.scale(pygame.image.load("images/buttons/resume.png"), (300, 100))
+settings_img = pygame.transform.scale(pygame.image.load("images/buttons/settings.png"), (300, 100))
+
+#Images of notifications
+accept_img = pygame.transform.scale(pygame.image.load("images/buttons/accept.png"), (100, 100))
+decline_img = pygame.transform.scale(pygame.image.load("images/buttons/decline.png"), (100, 100))
+
+#Images for uni
+physics_img = pygame.transform.scale(pygame.image.load("images/buttons/physics.png"), (220, 70))
+pp2_img = pygame.transform.scale(pygame.image.load("images/buttons/pp2.png"), (200, 70))
+history_img = pygame.transform.scale(pygame.image.load("images/buttons/history.png"), (200, 70))
+
 #Buttons
 kbtu_button = kbtu_icon.get_rect(center = (1500, 320))
 club_button = club_icon.get_rect(center = (750, 200))
@@ -56,8 +82,24 @@ dorm_button = dorm_icon.get_rect(center = (150, 240))
 gym_button = gym_icon.get_rect(center = (300, 800))
 pause_button = pause_icon.get_rect(center = (1650, 40))
 map_button = map_icon.get_rect(center = (1650, 120))
-tasklist_button = tasklist_icon.get_rect(center = (1650, 200))
+dumbell1_button = dumbell_5kg.get_rect(center = (1095, 400))
+dumbell2_button = dumbell_10kg.get_rect(center = (1116, 485))
+dumbell3_button = dumbell_15kg.get_rect(center = (1136, 585))
+dumbelr1_button = dumbell_5kg.get_rect(center = (905, 400))
+dumbelr2_button = dumbell_10kg.get_rect(center = (883, 485))
+dumbelr3_button = dumbell_15kg.get_rect(center = (859, 585))
+gant_button = gant_bot.get_rect(center = (1000, 510))
+box_button = box_img.get_rect(center = (220, 380))
+tournique_button = tournique_img.get_rect(center = (600, 300))
+start_button = start_img.get_rect(center = (WIDTH//2, HEIGHT//2 - 200))
+settings_button = settings_img.get_rect(center = (WIDTH//2, HEIGHT//2 - 50))
+resume_button = resume_img.get_rect(center = (WIDTH//2, HEIGHT//2 + 100))
+exit_button = exit_img.get_rect(center = (WIDTH//2, HEIGHT//2 + 250))
+physics_button = physics_img.get_rect(center = (70, 250))
+history_button = history_img.get_rect(center = (70, 350))
+pp2_button = pp2_img.get_rect(center = (70, 450))
 
+#-------------------------------------------------------------------------------------------------------------------------
 
 #Font
 font = pygame.font.SysFont('Arial', 30)
@@ -67,11 +109,26 @@ font_notifications = pygame.font.SysFont('Arial', 20)
 start_button_pressed = False
 
 #Length of parameters
-health_length = 100
+health_length = 50
 smile_length = 50
 brain_length = 10
 timeline = 0
 
+#Function that restart game
+def restart_game():
+    global health, brain, smile, timeline, hack_notify, gym_page, uni_page, menu_page, map_page, club_page, theatre_page, paused
+    health = 50
+    brain = 10
+    smile = 50
+    timeline = 0
+    hack_notify = False
+    gym_page = False
+    map_page = False
+    menu_page = False
+    uni_page = False
+    club_page = False
+    theatre_page = False
+    paused = False
 
 while True:
     screen.fill((0, 0, 0))
@@ -83,29 +140,25 @@ while True:
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                if start_rect.collidepoint(mouse_pos):
+                if start_button.collidepoint(mouse_pos):
                     main_page = True
                     menu_page = False
                 
-                if settings_rect.collidepoint(mouse_pos):
+                if settings_button.collidepoint(mouse_pos):
                     settings_page = True
                     menu_page = False
 
-                if resume_rect.collidepoint(mouse_pos):
+                if resume_button.collidepoint(mouse_pos):
                     main_page = True
                     menu_page = False
                 
-                if quit_rect.collidepoint(mouse_pos):
+                if exit_button.collidepoint(mouse_pos):
                     exit()
 
-        draw_button.draw_button(screen, font, WIDTH//2, HEIGHT//2 - 200, 200, 50, "Start Game", (0, 0, 0), (255, 255, 255),(0, 0, 0))
-        start_rect = pygame.Rect(WIDTH//2, HEIGHT//2 - 200, 200, 50)
-        draw_button.draw_button(screen, font, WIDTH//2, HEIGHT//2 - 100, 200, 50, "Settings", (0, 0, 0), (255, 255, 255),(0, 0, 0))
-        settings_rect = pygame.Rect(WIDTH//2, HEIGHT//2 - 100, 200, 50)
-        draw_button.draw_button(screen, font, WIDTH//2, HEIGHT//2, 200, 50, "Resume", (0, 0, 0), (255, 255, 255),(0, 0, 0))
-        resume_rect = pygame.Rect(WIDTH//2, HEIGHT//2, 200, 50)
-        draw_button.draw_button(screen, font, WIDTH//2, HEIGHT//2 + 100, 200, 50, "Quit Game", (0, 0, 0), (255, 255, 255),(0, 0, 0))
-        quit_rect = pygame.Rect(WIDTH//2, HEIGHT//2 + 100, 200, 50)
+        screen.blit(start_img, start_button.topleft)
+        screen.blit(settings_img, settings_button.topleft)
+        screen.blit(resume_img, resume_button.topleft)
+        screen.blit(exit_img, exit_button.topleft)
         pygame.display.update()
 
         while settings_page:
@@ -142,31 +195,33 @@ while True:
         draw_button.draw_button(screen, font, 70, 70, 104, 24, "", (0, 0, 0), (255, 255, 255),(0, 0, 0))
         draw_button.draw_button(screen, font, 72, 72, smile_length, 20, "", (0, 0, 0), (255, 255, 0), (0,0,0))
         draw_button.draw_button(screen, font, 70, 120, 104, 24, "", (0, 0, 0), (255, 255, 255),(0, 0, 0))
-        draw_button.draw_button(screen, font, 72, 122, brain_length, 20, "", (0, 0, 0), (0, 0, 255), (0,0,0))
+        draw_button.draw_button(screen, font, 72, 122, brain_length, 20, "", (0, 0, 0), (0, 123, 203), (0,0,0))
         #Drawing timeline
         draw_button.draw_button(screen, font, 1100, 20, 360, 24, "", (0, 0, 0), (255, 255, 255),(0, 0, 0))
         draw_button.draw_button(screen, font, 1102, 22, timeline/60, 20, "", (0, 0, 0), (0, 255, 0),(0, 0, 0))
         #drawing buttons for main page
-        pygame.draw.rect(screen, (255, 253, 214), map_button)
         screen.blit(map_icon, map_button.topleft)
-        pygame.draw.rect(screen, (255, 253, 214), tasklist_button)
-        screen.blit(tasklist_icon, tasklist_button.topleft)
-        pygame.draw.rect(screen, (255, 253, 214), pause_button)
         screen.blit(pause_icon, pause_button.topleft)
 
         timeline+=1
 
-        if timeline == 360:
+        if timeline == 7200:
             hack_notify = True
 
-        elif timeline == 720:
+        elif timeline == 7800:
             hack_notify = False
         
         elif timeline == 14400:
             hack_notify = True
         
+        elif timeline == 15000:
+            hack_notify = False
+        
         elif timeline == 20000:
             hack_notify = True
+
+        elif timeline == 20600:
+            hack_notify = False
 
         elif timeline == 21600:
             end_page = True
@@ -209,17 +264,11 @@ while True:
             screen.fill((100, 100, 100))
             screen.blit(map_background, (0,0))
             #Drawing buttons for locations
-            pygame.draw.rect(screen, (255, 253, 214), kbtu_button)
             screen.blit(kbtu_icon, kbtu_button.topleft)
-            pygame.draw.rect(screen, (255, 253, 214), club_button)
             screen.blit(club_icon, club_button.topleft)
-            pygame.draw.rect(screen, (255, 253, 214), theatre_button)
             screen.blit(theatre_icon, theatre_button.topleft)
-            pygame.draw.rect(screen, (255, 253, 214), dorm_button)
             screen.blit(dorm_icon, dorm_button.topleft)
-            pygame.draw.rect(screen, (255, 253, 214), gym_button)
             screen.blit(gym_icon, gym_button.topleft)
-            pygame.draw.rect(screen, (255, 253, 214), pause_button)
             screen.blit(pause_icon, pause_button.topleft)
             pygame.display.update()
 
@@ -228,24 +277,15 @@ while True:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         exit()
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_q:
-                            uni_page = False
 
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         pos = pygame.mouse.get_pos()
                         if pause_button.collidepoint(pos):
-                            menu_page = True
-                            uni_page = False
-                            map_page = False
+                            paused = True
                         if map_button.collidepoint(pos):
                             uni_page = False
 
-                screen.fill((0, 0, 0))
                 screen.blit(uni_img1, (0,0))
-                draw_button.draw_button(screen, font, 300, 50, 300, 50, "Calculus", (255, 128, 128), (255, 255, 255),(0, 0, 0))
-                draw_button.draw_button(screen, font, 850, 50, 300, 50, "History", (255, 128, 128), (255, 255, 255),(0, 0, 0))
-                draw_button.draw_button(screen, font, 1300, 50, 300, 50, "Physics", (255, 128, 128), (255, 255, 255),(0, 0, 0))
                 
                 screen.blit(heart_img, (15, 10))
                 screen.blit(smile_img, (15, 60))
@@ -255,32 +295,64 @@ while True:
                 draw_button.draw_button(screen, font, 70, 70, 104, 24, "", (0, 0, 0), (255, 255, 255),(0, 0, 0))
                 draw_button.draw_button(screen, font, 72, 72, smile_length, 20, "", (0, 0, 0), (255, 255, 0), (0,0,0))
                 draw_button.draw_button(screen, font, 70, 120, 104, 24, "", (0, 0, 0), (255, 255, 255),(0, 0, 0))
-                draw_button.draw_button(screen, font, 72, 122, brain_length, 20, "", (0, 0, 0), (0, 0, 255), (0,0,0))
+                draw_button.draw_button(screen, font, 72, 122, brain_length, 20, "", (0, 0, 0), (0, 123, 203), (0,0,0))
+
+                surface_of_rect = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+                surface_of_rect.set_alpha(128)
+
+                # Draw a transparent rectangle onto the surface
+                rect = pygame.Rect(80, 200, 350, 600)
+                pygame.draw.rect(surface_of_rect, (0, 0, 0), rect)
                 
                 #Drawing buttons
-                pygame.draw.rect(screen, (255, 253, 214), pause_button)
                 screen.blit(pause_icon, pause_button.topleft)
-                pygame.draw.rect(screen, (255, 253, 214), map_button)
                 screen.blit(map_icon, map_button.topleft)
+                screen.blit(surface_of_rect, (0, 0))
+                screen.blit(history_img, history_button.topright)
+                screen.blit(pp2_img, pp2_button.topright)
+                screen.blit(physics_img, physics_button.topright)
 
                 pygame.display.update()
+
+                while paused:
+                    screen.blit(menu_background, (0,0))
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            exit()
+
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            mouse_pos = pygame.mouse.get_pos()
+                            if start_button.collidepoint(mouse_pos):
+                                restart_game()
+                                main_page = True
+
+                            
+                            # if settings_rect.collidepoint(mouse_pos):
+                            #     settings_page = True
+                            #     menu_page = False
+
+                            if resume_button.collidepoint(mouse_pos):
+                                paused = False
+                            
+                            if exit_button.collidepoint(mouse_pos):
+                                exit()
+
+                    screen.blit(start_img, start_button.topleft)
+                    screen.blit(settings_img, settings_button.topleft)
+                    screen.blit(resume_img, resume_button.topleft)
+                    screen.blit(exit_img, exit_button.topleft)
+                    pygame.display.update()
+                    
 
             while gym_page:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         exit()
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_g:
-                            gym_page = False
-                        if event.key == pygame.K_z:
-                            pullup = True
 
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         pos = pygame.mouse.get_pos()
                         if pause_button.collidepoint(pos):
-                            menu_page = True
-                            gym_page = False
-                            map_page = False
+                            paused = True
                         if map_button.collidepoint(pos):
                             gym_page = False
 
@@ -295,25 +367,50 @@ while True:
                 draw_button.draw_button(screen, font, 70, 70, 104, 24, "", (0, 0, 0), (255, 255, 255),(0, 0, 0))
                 draw_button.draw_button(screen, font, 72, 72, smile_length, 20, "", (0, 0, 0), (255, 255, 0), (0,0,0))
                 draw_button.draw_button(screen, font, 70, 120, 104, 24, "", (0, 0, 0), (255, 255, 255),(0, 0, 0))
-                draw_button.draw_button(screen, font, 72, 122, brain_length, 20, "", (0, 0, 0), (0, 0, 255), (0,0,0))
+                draw_button.draw_button(screen, font, 72, 122, brain_length, 20, "", (0, 0, 0), (0, 123, 203), (0,0,0))
 
                 #Drawing buttons
-                pygame.draw.rect(screen, (255, 253, 214), pause_button)
                 screen.blit(pause_icon, pause_button.topleft)
-                pygame.draw.rect(screen, (255, 253, 214), map_button)
                 screen.blit(map_icon, map_button.topleft)
+                screen.blit(dumbell_5kg, dumbell1_button.topleft)
+                screen.blit(dumbell_10kg, dumbell2_button.topleft)
+                screen.blit(dumbell_15kg, dumbell3_button.topleft)
+                screen.blit(dumbell_5kg, dumbelr1_button.topleft)
+                screen.blit(dumbell_10kg, dumbelr2_button.topleft)
+                screen.blit(dumbell_15kg, dumbelr3_button.topleft)
+                screen.blit(gant_bot, gant_button.topleft)
+                screen.blit(box_img, box_button.topleft)
+                screen.blit(tournique_img, tournique_button.topleft)
                 pygame.display.update()
 
-                while pullup:
-                    screen.fill((128, 255, 255))
+                while paused:
+                    screen.blit(menu_background, (0,0))
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             exit()
-                        if event.type == pygame.KEYDOWN:
-                            if event.key == pygame.K_z:
-                                pullup = False
-                            if event.key == pygame.K_s:
-                                moving_down_pullup = True
+
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            mouse_pos = pygame.mouse.get_pos()
+                            if start_button.collidepoint(mouse_pos):
+                                restart_game()
+                                main_page = True
+
+                            
+                            # if settings_rect.collidepoint(mouse_pos):
+                            #     settings_page = True
+                            #     menu_page = False
+
+                            if resume_button.collidepoint(mouse_pos):
+                                paused = False
+                            
+                            if exit_button.collidepoint(mouse_pos):
+                                exit()
+
+                    screen.blit(start_img, start_button.topleft)
+                    screen.blit(settings_img, settings_button.topleft)
+                    screen.blit(resume_img, resume_button.topleft)
+                    screen.blit(exit_img, exit_button.topleft)
+                    pygame.display.update()
 
             while theatre_page:
                 for event in pygame.event.get():
@@ -323,14 +420,12 @@ while True:
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         pos = pygame.mouse.get_pos()
                         if pause_button.collidepoint(pos):
-                            menu_page = True
-                            theatre_page = False
-                            map_page = False
+                            paused = True
                         if map_button.collidepoint(pos):
                             theatre_page = False
 
 
-                screen.fill((0, 0, 0))
+                screen.blit(theatre_bg, (0,0))
                 draw_button.draw_button(screen, font, 300, 50, 300, 50, "Romance", (255, 128, 128), (255, 255, 255),(0, 0, 0))
                 draw_button.draw_button(screen, font, 850, 50, 300, 50, "Drama", (255, 128, 128), (255, 255, 255),(0, 0, 0))
                 draw_button.draw_button(screen, font, 1300, 50, 300, 50, "Historical", (255, 128, 128), (255, 255, 255),(0, 0, 0))
@@ -343,15 +438,42 @@ while True:
                 draw_button.draw_button(screen, font, 70, 70, 104, 24, "", (0, 0, 0), (255, 255, 255),(0, 0, 0))
                 draw_button.draw_button(screen, font, 72, 72, smile_length, 20, "", (0, 0, 0), (255, 255, 0), (0,0,0))
                 draw_button.draw_button(screen, font, 70, 120, 104, 24, "", (0, 0, 0), (255, 255, 255),(0, 0, 0))
-                draw_button.draw_button(screen, font, 72, 122, brain_length, 20, "", (0, 0, 0), (0, 0, 255), (0,0,0))
+                draw_button.draw_button(screen, font, 72, 122, brain_length, 20, "", (0, 0, 0), (0, 123, 203), (0,0,0))
 
                 #Drawing buttons
-                pygame.draw.rect(screen, (255, 253, 214), pause_button)
                 screen.blit(pause_icon, pause_button.topleft)
-                pygame.draw.rect(screen, (255, 253, 214), map_button)
                 screen.blit(map_icon, map_button.topleft)
 
                 pygame.display.update()
+
+                while paused:
+                    screen.blit(menu_background, (0,0))
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            exit()
+
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            mouse_pos = pygame.mouse.get_pos()
+                            if start_button.collidepoint(mouse_pos):
+                                restart_game()
+                                main_page = True
+
+                            
+                            # if settings_rect.collidepoint(mouse_pos):
+                            #     settings_page = True
+                            #     menu_page = False
+
+                            if resume_button.collidepoint(mouse_pos):
+                                paused = False
+                            
+                            if exit_button.collidepoint(mouse_pos):
+                                exit()
+
+                    screen.blit(start_img, start_button.topleft)
+                    screen.blit(settings_img, settings_button.topleft)
+                    screen.blit(resume_img, resume_button.topleft)
+                    screen.blit(exit_img, exit_button.topleft)
+                    pygame.display.update()
 
 
             while club_page:
@@ -362,15 +484,13 @@ while True:
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         pos = pygame.mouse.get_pos()
                         if pause_button.collidepoint(pos):
-                            menu_page = True
-                            club_page = False
-                            map_page = False
+                            paused = True
 
                         if map_button.collidepoint(pos):
                             club_page = False
 
 
-                screen.fill((0, 0, 0))
+                screen.blit(club_bg, (0,0))
                 draw_button.draw_button(screen, font, 300, 50, 300, 50, "Just Dance", (255, 128, 128), (255, 255, 255),(0, 0, 0))
                 draw_button.draw_button(screen, font, 850, 50, 300, 50, "Iwu jane Qyzben tanysu", (255, 128, 128), (255, 255, 255),(0, 0, 0))
                 draw_button.draw_button(screen, font, 1300, 50, 300, 50, "Casino", (255, 128, 128), (255, 255, 255),(0, 0, 0))
@@ -383,15 +503,42 @@ while True:
                 draw_button.draw_button(screen, font, 70, 70, 104, 24, "", (0, 0, 0), (255, 255, 255),(0, 0, 0))
                 draw_button.draw_button(screen, font, 72, 72, smile_length, 20, "", (0, 0, 0), (255, 255, 0), (0,0,0))
                 draw_button.draw_button(screen, font, 70, 120, 104, 24, "", (0, 0, 0), (255, 255, 255),(0, 0, 0))
-                draw_button.draw_button(screen, font, 72, 122, brain_length, 20, "", (0, 0, 0), (0, 0, 255), (0,0,0))
+                draw_button.draw_button(screen, font, 72, 122, brain_length, 20, "", (0, 0, 0), (0, 123, 203), (0,0,0))
 
                 #Drawing buttons
-                pygame.draw.rect(screen, (255, 253, 214), pause_button)
                 screen.blit(pause_icon, pause_button.topleft)
-                pygame.draw.rect(screen, (255, 253, 214), map_button)
                 screen.blit(map_icon, map_button.topleft)
                 
                 pygame.display.update()
+
+                while paused:
+                    screen.blit(menu_background, (0,0))
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            exit()
+
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            mouse_pos = pygame.mouse.get_pos()
+                            if start_button.collidepoint(mouse_pos):
+                                restart_game()
+                                main_page = True
+
+                            
+                            # if settings_rect.collidepoint(mouse_pos):
+                            #     settings_page = True
+                            #     menu_page = False
+
+                            if resume_button.collidepoint(mouse_pos):
+                                paused = False
+                            
+                            if exit_button.collidepoint(mouse_pos):
+                                exit()
+
+                    screen.blit(start_img, start_button.topleft)
+                    screen.blit(settings_img, settings_button.topleft)
+                    screen.blit(resume_img, resume_button.topleft)
+                    screen.blit(exit_img, exit_button.topleft)
+                    pygame.display.update() 
 
     while end_page:
         for event in pygame.event.get():
