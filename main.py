@@ -8,6 +8,13 @@ HEIGHT = 1000
 FPS = 60
 clock = pygame.time.Clock()
 
+#COLORS
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+YELLOW = (255, 255, 0)
+GREEN = (0, 255, 0)
+
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Student Life")
 
@@ -30,25 +37,25 @@ paused = False
 heart_img = pygame.transform.scale(pygame.image.load("images/icons/heart.png"), (45, 45))
 brain_img = pygame.transform.scale(pygame.image.load("images/icons/brain.png"), (45, 45))
 smile_img = pygame.transform.scale(pygame.image.load("images/icons/smile.png"), (45, 45))
-kbtu_icon = pygame.transform.scale(pygame.image.load("images/map/kbtu.png"), (300, 200))
-club_icon = pygame.transform.scale(pygame.image.load("images/map/club.png"), (100, 300))
-theatre_icon = pygame.transform.scale(pygame.image.load("images/map/theatre.png"), (300, 180))
+kbtu_icon = pygame.transform.scale(pygame.image.load("images/map/kbtu_icon.png"), (300, 200))
+club_icon = pygame.transform.scale(pygame.image.load("images/map/club_icon.png"), (100, 300))
+theatre_icon = pygame.transform.scale(pygame.image.load("images/map/theatre_icon.png"), (300, 180))
 dorm_icon = pygame.transform.scale(pygame.image.load("images/map/dorm.png"), (270, 150))
 pause_icon = pygame.transform.scale(pygame.image.load("images/buttons/pause.png"), (60, 60))
 map_icon = pygame.transform.scale(pygame.image.load("images/icons/map_icon.png"), (60, 60))
 gym_icon = pygame.transform.scale(pygame.image.load("images/map/gym_icon.png"), (270, 150))
 
 #Backgrounds
-uni_img1 = pygame.transform.scale(pygame.image.load("images/backgrounds/uni1.png"), (1700, 1465))
-uni_img2 = pygame.transform.scale(pygame.image.load("images/backgrounds/uni2.png"), (1700, 1465))
-uni_img3 = pygame.transform.scale(pygame.image.load("images/backgrounds/uni3.png"), (1700, 1465))
+uni_img1 = pygame.transform.scale(pygame.image.load("images/backgrounds/uniroom1.png"), (1700, 1465))
+uni_img2 = pygame.transform.scale(pygame.image.load("images/backgrounds/uniroom2.png"), (1700, 1465))
+uni_img3 = pygame.transform.scale(pygame.image.load("images/backgrounds/uniroom3.png"), (1700, 1465))
 map_background = pygame.transform.scale(pygame.image.load("images/backgrounds/map.png"), (1700, 1000))
-dorm_background = pygame.transform.scale(pygame.image.load("images/backgrounds/main.png"), (1700, 1465))
-menu_background = pygame.transform.scale(pygame.image.load("images/backgrounds/main_blur.png"), (1700, 1465))
-gym_background = pygame.transform.scale(pygame.image.load("images/backgrounds/gym.png"), (1700, 1465))
+dorm_background = pygame.transform.scale(pygame.image.load("images/backgrounds/main_bg.png"), (1700, 1465))
+menu_background = pygame.transform.scale(pygame.image.load("images/backgrounds/menu_bg.png"), (1700, 1465))
+gym_background = pygame.transform.scale(pygame.image.load("images/backgrounds/gym_bg.png"), (1700, 1465))
 gym_for_games = pygame.transform.scale(pygame.image.load("images/backgrounds/gym_for_games.png"), (1700, 1465))
-club_bg = pygame.transform.scale(pygame.image.load("images/backgrounds/club_back.png"), (1700, 1465))
-theatre_bg = pygame.transform.scale(pygame.image.load("images/backgrounds/theatre.png"), (1700, 1000))
+club_bg = pygame.transform.scale(pygame.image.load("images/backgrounds/club_bg.png"), (1700, 1465))
+theatre_bg = pygame.transform.scale(pygame.image.load("images/backgrounds/theatre_bg.png"), (1700, 1000))
 
 #For Gym
 dumbell_5kg = pygame.transform.scale(pygame.image.load("images/icons/5kg.png"), (45, 45))
@@ -71,8 +78,8 @@ decline_img = pygame.transform.scale(pygame.image.load("images/buttons/decline.p
 
 #Images for uni
 physics_img = pygame.transform.scale(pygame.image.load("images/buttons/physics.png"), (220, 70))
-pp2_img = pygame.transform.scale(pygame.image.load("images/buttons/pp2.png"), (200, 70))
-history_img = pygame.transform.scale(pygame.image.load("images/buttons/history.png"), (200, 70))
+pp2_img = pygame.transform.scale(pygame.image.load("images/buttons/pp2.png"), (220, 70))
+history_img = pygame.transform.scale(pygame.image.load("images/buttons/history.png"), (220, 70))
 
 #Buttons
 kbtu_button = kbtu_icon.get_rect(center = (1500, 320))
@@ -95,9 +102,9 @@ start_button = start_img.get_rect(center = (WIDTH//2, HEIGHT//2 - 200))
 settings_button = settings_img.get_rect(center = (WIDTH//2, HEIGHT//2 - 50))
 resume_button = resume_img.get_rect(center = (WIDTH//2, HEIGHT//2 + 100))
 exit_button = exit_img.get_rect(center = (WIDTH//2, HEIGHT//2 + 250))
-physics_button = physics_img.get_rect(center = (70, 250))
-history_button = history_img.get_rect(center = (70, 350))
-pp2_button = pp2_img.get_rect(center = (70, 450))
+physics_button = physics_img.get_rect(center = (40, 300))
+history_button = history_img.get_rect(center = (40, 400))
+pp2_button = pp2_img.get_rect(center = (40, 500))
 
 #-------------------------------------------------------------------------------------------------------------------------
 
@@ -113,6 +120,33 @@ health_length = 50
 smile_length = 50
 brain_length = 10
 timeline = 0
+
+
+#-----------------------------------------------------------------------------------------------------------------------------
+#Parameters of pullup game
+pullup_w, pullup_h = 50, 350
+
+TOP_RED_HEIGHT = pullup_h * 0.25
+BOTTOM_RED_HEIGHT = pullup_h * 0.25
+YELLOW_HEIGHT_TOP = pullup_h * 0.20
+YELLOW_HEIGHT_BOTTOM = pullup_h * 0.20
+GREEN_HEIGHT_BOTTOM = pullup_h * 0.10
+
+top_red_y = HEIGHT // 2 - pullup_h // 2
+bottom_red_y = HEIGHT // 2 + pullup_h // 2 - BOTTOM_RED_HEIGHT
+
+RECT_COLOR = WHITE
+
+LINE_COLOR = WHITE
+LINE_WIDTH = 2
+LINE_Y = HEIGHT // 2
+LINE_SPEED = 2
+LINE_SPEED_GIVEN = False
+move_line = True
+
+pullup_score = 0
+pullup_score_given = False
+#-----------------------------------------------------------------------------------------------------------------------------
 
 #Function that restart game
 def restart_game():
@@ -301,7 +335,7 @@ while True:
                 surface_of_rect.set_alpha(128)
 
                 # Draw a transparent rectangle onto the surface
-                rect = pygame.Rect(80, 200, 350, 600)
+                rect = pygame.Rect(110, 250, 300, 300)
                 pygame.draw.rect(surface_of_rect, (0, 0, 0), rect)
                 
                 #Drawing buttons
@@ -355,6 +389,9 @@ while True:
                             paused = True
                         if map_button.collidepoint(pos):
                             gym_page = False
+
+                        if tournique_button.collidepoint(pos):
+                            pullup = True
 
                     
                 screen.blit(gym_background, (0,0))
@@ -411,6 +448,54 @@ while True:
                     screen.blit(resume_img, resume_button.topleft)
                     screen.blit(exit_img, exit_button.topleft)
                     pygame.display.update()
+
+                while pullup:
+                    screen.blit(gym_for_games, (0,0))
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            exit()
+                        elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                            move_line = not move_line
+                    # move line
+                    if move_line:
+                        if LINE_Y <= HEIGHT // 2 - pullup_h // 2 or LINE_Y >= HEIGHT // 2 + pullup_h // 2:
+                            LINE_SPEED = -LINE_SPEED
+                            score_given = False
+                        LINE_Y += LINE_SPEED
+
+                    if (HEIGHT - pullup_h)/2 + (pullup_h/4) + (pullup_h/5) <= LINE_Y <= (HEIGHT - pullup_h)/2 + (pullup_h/4) + (pullup_h/5) + (pullup_h/10) and not move_line and not score_given:
+                        pullup_score += 1
+                        pullup_score_given = True
+                        if LINE_SPEED < 0:
+                            LINE_SPEED -= 1
+                            LINE_SPEED_GIVEN = True
+                        else:
+                            LINE_SPEED += 1
+                            LINE_SPEED_GIVEN = True
+
+                    if (LINE_Y <= top_red_y + TOP_RED_HEIGHT or LINE_Y >= bottom_red_y) and not move_line:
+                        exit()
+
+                    # levels
+                    pygame.draw.rect(screen, RED, (WIDTH // 2 - pullup_w // 2, top_red_y, pullup_w, TOP_RED_HEIGHT))
+                    pygame.draw.rect(screen, YELLOW, (WIDTH // 2 - pullup_w // 2, top_red_y + TOP_RED_HEIGHT, pullup_w, YELLOW_HEIGHT_TOP))
+                    pygame.draw.rect(screen, RED, (WIDTH // 2 - pullup_w // 2, bottom_red_y, pullup_w, BOTTOM_RED_HEIGHT))
+                    pygame.draw.rect(screen, YELLOW, (WIDTH // 2 - pullup_w // 2, bottom_red_y - YELLOW_HEIGHT_BOTTOM, pullup_w, YELLOW_HEIGHT_BOTTOM))
+                    pygame.draw.rect(screen, GREEN, (WIDTH // 2 - pullup_w // 2, bottom_red_y - YELLOW_HEIGHT_BOTTOM - GREEN_HEIGHT_BOTTOM, pullup_w, GREEN_HEIGHT_BOTTOM))
+                    pygame.draw.rect(screen, RECT_COLOR, (WIDTH // 2 - pullup_w // 2, top_red_y + TOP_RED_HEIGHT + YELLOW_HEIGHT_TOP, pullup_w, pullup_h - TOP_RED_HEIGHT - BOTTOM_RED_HEIGHT - YELLOW_HEIGHT_TOP - YELLOW_HEIGHT_BOTTOM - GREEN_HEIGHT_BOTTOM))
+
+                    pygame.draw.line(screen, LINE_COLOR, (WIDTH // 2 - pullup_w // 2, LINE_Y), (WIDTH // 2 + pullup_w // 2, LINE_Y), LINE_WIDTH)
+
+                    font = pygame.font.Font(None, 36)
+                    text = font.render("Score: " + str(pullup_score), True, WHITE)
+                    screen.blit(text, (10, 10))
+
+                    speed_text = font.render("Speed: " + str(abs(LINE_SPEED)), True, WHITE)
+                    screen.blit(speed_text, (10, 40))
+
+
+                    pygame.display.flip()
+                    clock.tick(FPS)
 
             while theatre_page:
                 for event in pygame.event.get():
