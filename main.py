@@ -1,11 +1,14 @@
 import pygame
 import draw_button
+from sprite_player import *
+import random
+import kps
 pygame.init()
 
 #SIZE
 WIDTH = 1700
 HEIGHT = 1000
-FPS = 60
+FPS = 15
 clock = pygame.time.Clock()
 
 #COLORS
@@ -31,6 +34,22 @@ pullup = False
 end_page = False
 hack_notify = False
 paused = False
+animation = False
+boxing = False
+pullup = False
+ganteli = False
+
+#################################################### - ANIMATIONS - ########################################################
+dream_index = 0
+blink_index = 0
+rotate_index = 0
+box_index = 0
+pullup_index = 0
+ganteli_index = 0
+student = Student()
+actions = [rotate_head, blinking, dreaming]
+#################################################### -------------- ########################################################
+
 
 #------------------------------------------------------------------------------------------------------------------
 #images
@@ -119,33 +138,12 @@ start_button_pressed = False
 health_length = 50
 smile_length = 50
 brain_length = 10
+space_counter = 0
 timeline = 0
 
 
 #-----------------------------------------------------------------------------------------------------------------------------
-#Parameters of pullup game
-pullup_w, pullup_h = 50, 350
 
-TOP_RED_HEIGHT = pullup_h * 0.25
-BOTTOM_RED_HEIGHT = pullup_h * 0.25
-YELLOW_HEIGHT_TOP = pullup_h * 0.20
-YELLOW_HEIGHT_BOTTOM = pullup_h * 0.20
-GREEN_HEIGHT_BOTTOM = pullup_h * 0.10
-
-top_red_y = HEIGHT // 2 - pullup_h // 2
-bottom_red_y = HEIGHT // 2 + pullup_h // 2 - BOTTOM_RED_HEIGHT
-
-RECT_COLOR = WHITE
-
-LINE_COLOR = WHITE
-LINE_WIDTH = 2
-LINE_Y = HEIGHT // 2
-LINE_SPEED = 2
-LINE_SPEED_GIVEN = False
-move_line = True
-
-pullup_score = 0
-pullup_score_given = False
 #-----------------------------------------------------------------------------------------------------------------------------
 
 #Function that restart game
@@ -205,7 +203,7 @@ while True:
                         settings_page = False
             screen.fill((100, 100, 100))
             pygame.display.update()
-
+   
     while main_page:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -232,37 +230,61 @@ while True:
         draw_button.draw_button(screen, font, 72, 122, brain_length, 20, "", (0, 0, 0), (0, 123, 203), (0,0,0))
         #Drawing timeline
         draw_button.draw_button(screen, font, 1100, 20, 360, 24, "", (0, 0, 0), (255, 255, 255),(0, 0, 0))
-        draw_button.draw_button(screen, font, 1102, 22, timeline/60, 20, "", (0, 0, 0), (0, 255, 0),(0, 0, 0))
+        draw_button.draw_button(screen, font, 1102, 22, timeline/FPS, 20, "", (0, 0, 0), (0, 255, 0),(0, 0, 0))
         #drawing buttons for main page
         screen.blit(map_icon, map_button.topleft)
         screen.blit(pause_icon, pause_button.topleft)
 
         timeline+=1
+        if timeline%75 == 0:
+            act = random.choice(actions)
+            animation = True
 
-        if timeline == 7200:
+
+        if timeline == 1800:
             hack_notify = True
 
-        elif timeline == 7800:
+        elif timeline == 1950:
             hack_notify = False
         
-        elif timeline == 14400:
+        elif timeline == 3600:
             hack_notify = True
         
-        elif timeline == 15000:
+        elif timeline == 3750:
             hack_notify = False
         
-        elif timeline == 20000:
+        elif timeline == 5000:
             hack_notify = True
 
-        elif timeline == 20600:
+        elif timeline == 5150:
             hack_notify = False
 
-        elif timeline == 21600:
+        elif timeline == 5400:
             end_page = True
             main_page = False
 
         if hack_notify:
             draw_button.draw_button(screen, font_notifications, 500, 300, 500, 300, "MR Kelgenbayev: Hello everyone! If you want to participate in Game Jam, then accept it", (0, 0,0), (255, 255, 255), (0,0,0))
+        if animation:
+            if act == rotate_head:
+                student.rotating(screen, rotate_index)
+                rotate_index = (rotate_index+1) % len(rotate_head)
+                if (timeline-75)%11==0:
+                    animation = False
+            elif act == blinking:
+                student.blinking(screen, blink_index)
+                blink_index = (blink_index+1) % len(blinking)
+                if (timeline-75)%20==0:
+                    animation = False
+            elif act == dreaming:
+                student.dreaming(screen, dream_index)
+                dream_index = (dream_index+1) % len(dreaming)
+                if (timeline-75)%42==0:
+                    animation = False
+
+        elif animation == False:
+            screen.blit(student.image, (280, 490))
+
         clock.tick(FPS)
         pygame.display.update()
 
@@ -295,7 +317,6 @@ while True:
                         menu_page = True
                         map_page = False
 
-            screen.fill((100, 100, 100))
             screen.blit(map_background, (0,0))
             #Drawing buttons for locations
             screen.blit(kbtu_icon, kbtu_button.topleft)
@@ -392,6 +413,12 @@ while True:
 
                         if tournique_button.collidepoint(pos):
                             pullup = True
+                        
+                        if box_button.collidepoint(pos):
+                            boxing = True
+
+                        if gant_button.collidepoint(pos):
+                            ganteli = True
 
                     
                 screen.blit(gym_background, (0,0))
@@ -449,53 +476,47 @@ while True:
                     screen.blit(exit_img, exit_button.topleft)
                     pygame.display.update()
 
+                while boxing:
+                    screen.blit(gym_for_games, (0,0))
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            exit()
+                        if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_b:
+                                boxing = False
+                    student.boxing(screen, box_index)
+                    box_index = (box_index + 1) % len(boxings)
+                    pygame.display.update()
+                    clock.tick(10)
+
                 while pullup:
                     screen.blit(gym_for_games, (0,0))
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             exit()
-                        elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                            move_line = not move_line
-                    # move line
-                    if move_line:
-                        if LINE_Y <= HEIGHT // 2 - pullup_h // 2 or LINE_Y >= HEIGHT // 2 + pullup_h // 2:
-                            LINE_SPEED = -LINE_SPEED
-                            score_given = False
-                        LINE_Y += LINE_SPEED
+                        if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_b:
+                                pullup = False
+                    student.pullupping(screen, pullup_index)
+                    pullup_index = (pullup_index + 1) % len(pullups)
+                    clock.tick(15)
+                    pygame.display.update()
 
-                    if (HEIGHT - pullup_h)/2 + (pullup_h/4) + (pullup_h/5) <= LINE_Y <= (HEIGHT - pullup_h)/2 + (pullup_h/4) + (pullup_h/5) + (pullup_h/10) and not move_line and not score_given:
-                        pullup_score += 1
-                        pullup_score_given = True
-                        if LINE_SPEED < 0:
-                            LINE_SPEED -= 1
-                            LINE_SPEED_GIVEN = True
-                        else:
-                            LINE_SPEED += 1
-                            LINE_SPEED_GIVEN = True
-
-                    if (LINE_Y <= top_red_y + TOP_RED_HEIGHT or LINE_Y >= bottom_red_y) and not move_line:
-                        exit()
-
-                    # levels
-                    pygame.draw.rect(screen, RED, (WIDTH // 2 - pullup_w // 2, top_red_y, pullup_w, TOP_RED_HEIGHT))
-                    pygame.draw.rect(screen, YELLOW, (WIDTH // 2 - pullup_w // 2, top_red_y + TOP_RED_HEIGHT, pullup_w, YELLOW_HEIGHT_TOP))
-                    pygame.draw.rect(screen, RED, (WIDTH // 2 - pullup_w // 2, bottom_red_y, pullup_w, BOTTOM_RED_HEIGHT))
-                    pygame.draw.rect(screen, YELLOW, (WIDTH // 2 - pullup_w // 2, bottom_red_y - YELLOW_HEIGHT_BOTTOM, pullup_w, YELLOW_HEIGHT_BOTTOM))
-                    pygame.draw.rect(screen, GREEN, (WIDTH // 2 - pullup_w // 2, bottom_red_y - YELLOW_HEIGHT_BOTTOM - GREEN_HEIGHT_BOTTOM, pullup_w, GREEN_HEIGHT_BOTTOM))
-                    pygame.draw.rect(screen, RECT_COLOR, (WIDTH // 2 - pullup_w // 2, top_red_y + TOP_RED_HEIGHT + YELLOW_HEIGHT_TOP, pullup_w, pullup_h - TOP_RED_HEIGHT - BOTTOM_RED_HEIGHT - YELLOW_HEIGHT_TOP - YELLOW_HEIGHT_BOTTOM - GREEN_HEIGHT_BOTTOM))
-
-                    pygame.draw.line(screen, LINE_COLOR, (WIDTH // 2 - pullup_w // 2, LINE_Y), (WIDTH // 2 + pullup_w // 2, LINE_Y), LINE_WIDTH)
-
-                    font = pygame.font.Font(None, 36)
-                    text = font.render("Score: " + str(pullup_score), True, WHITE)
-                    screen.blit(text, (10, 10))
-
-                    speed_text = font.render("Speed: " + str(abs(LINE_SPEED)), True, WHITE)
-                    screen.blit(speed_text, (10, 40))
+                while ganteli:
+                    screen.blit(gym_for_games, (0,0))
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            exit()
+                        if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_b:
+                                pullup = False
+                    student.ganteling(screen, ganteli_index)
+                    ganteli_index = (ganteli_index + 1) % len(gantelis)
+                    clock.tick(10)
+                    pygame.display.update()
+                    
 
 
-                    pygame.display.flip()
-                    clock.tick(FPS)
 
             while theatre_page:
                 for event in pygame.event.get():
