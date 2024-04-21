@@ -47,7 +47,6 @@ def run_letter_game():
 
         if current_time >= end_time:
             running = False
-            sounds.punch.stop()
             return score
 
         SCREEN.blit(bg, (0,0))
@@ -63,7 +62,6 @@ def run_letter_game():
         SCREEN.blit(score_text, (10, 80))
         damir.boxing(SCREEN, fr_index)
         fr_index = (fr_index + 1) % len(boxings)
-        sounds.punch.play()
 
         pygame.display.flip()
 
