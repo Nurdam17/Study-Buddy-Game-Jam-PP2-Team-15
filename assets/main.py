@@ -27,7 +27,7 @@ YELLOW = (255, 255, 0)
 GREEN = (0, 255, 0)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Student Life")
+pygame.display.set_caption("Study-Buddy")
 
 menu_page = True
 main_page = False
