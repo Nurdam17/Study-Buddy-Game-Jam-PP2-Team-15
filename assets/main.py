@@ -279,7 +279,7 @@ while True:
         if health_length >= 100:
             health_length = 100
         
-        if health_length == 0 or brain_length == 0 or smile_length == 0:
+        if health_length <= 0 or brain_length <= 0 or smile_length <= 0:
                 end_page = True
                 main_page = False
 
@@ -526,7 +526,7 @@ while True:
                 if smile_length >= 100:
                     smile_length = 100
 
-                if health_length == 0 or brain_length == 0 or smile_length == 0:
+                if health_length <= 0 or brain_length <= 0 or smile_length <= 0:
                     end_page = True
                     uni_page = False
                     map_page = False
@@ -672,7 +672,7 @@ while True:
                 if health_length >= 100:
                     health_length = 100
 
-                if health_length == 0 or brain_length == 0 or smile_length == 0:
+                if health_length <= 0 or brain_length <= 0 or smile_length <= 0:
                     end_page = True
                     gym_page = False
                     map_page = False
@@ -769,7 +769,7 @@ while True:
                 if smile_length >= 100:
                     smile_length = 100
 
-                if health_length == 0 or brain_length == 0 or smile_length == 0:
+                if health_length <= 0 or brain_length <= 0 or smile_length <= 0:
                     end_page = True
                     theatre_page = False
                     map_page = False
@@ -851,7 +851,7 @@ while True:
                 screen.blit(drink_img, drink_button.topleft)
                 screen.blit(casino_img, casino_button.topleft)
 
-                if health_length == 0 or brain_length == 0 or smile_length == 0:
+                if health_length <= 0 or brain_length <= 0 or smile_length <= 0:
                     end_page = True
                     club_page = False
                     map_page = False
