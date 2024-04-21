@@ -5,7 +5,7 @@ pygame.init()
 #SIZE
 WIDTH = 1700
 HEIGHT = 1000
-FPS = 60
+FPS = 10
 clock = pygame.time.Clock()
 
 #COLORS
@@ -22,10 +22,10 @@ bg = pygame.transform.scale(bg, (1700, 1465))
 run = True
 
 frame_index = 0
-animation_speed = 15  # Number of frames per second
+animation_speed = 19  # Number of frames per second
 clock = pygame.time.Clock()
 
-w, h = 500, 500
+w, h = 500, 650
 
 dream1 = pygame.transform.scale(pygame.image.load("images/animations/dreaming/dream1.png"), (w, h))
 dream2 = pygame.transform.scale(pygame.image.load("images/animations/dreaming/dream2.png"), (w, h))
@@ -56,7 +56,7 @@ while run:
         if event.type == pygame.QUIT:
             exit()
 
-    screen.blit(dreaming[frame_index], (280, 490))
+    screen.blit(dreaming[frame_index], (280, 350))
 
     # Update the display
     pygame.display.flip()

@@ -17,12 +17,12 @@ GREEN = (0, 255, 0)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Student Life")
-bg = pygame.image.load("images/backgrounds/main.png")
+bg = pygame.image.load("images/backgrounds/main_bg.png")
 bg = pygame.transform.scale(bg, (1700, 1465))
 run = True
 
 frame_index = 0
-animation_speed = 15  # Number of frames per second
+animation_speed = 60  # Number of frames per second
 clock = pygame.time.Clock()
 
 w, h = 500, 500
