@@ -884,7 +884,7 @@ while True:
 
                 if casino_page:
                     sc = jackpot.run_game(smile_length, health_length, brain_length)
-                    if sc > -10000000000000000:
+                    if sc[0] > -10000000000000000 and sc[1] > -1000000000 and sc[2] > -10000000:
                         health_length = sc[1]
                         smile_length = sc[0]
                         brain_length = sc[2]
