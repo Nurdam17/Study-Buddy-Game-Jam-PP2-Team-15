@@ -42,11 +42,11 @@ To run this game, you must install the necessary dependencies:
 
 1. Clone the repo from GitHub
 ```sh
-
+https://github.com/Nurdam17/Study-Buddy-Game-Jam-PP2-Team-15.git
 ```
 2. Open
 ```sh 
-
+cd Study-Buddy-Game-Jam-PP2-Team-15
 ```
 
 3. Install pygame
@@ -62,7 +62,7 @@ pip3 install -r pygame
 ```
 3. Go to the project folder:
    ```sh
-   cd StudyBody
+   cd Study-Buddy
    ```
 4. Lunch Python Pygame file
    ```sh
