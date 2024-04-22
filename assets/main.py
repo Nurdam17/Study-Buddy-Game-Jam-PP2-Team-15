@@ -52,6 +52,7 @@ physics_quiz = False
 history_quiz = False
 jackpot_page = False
 ill = False
+win_hack = False
 illness = random.randint(0, 5400)
 
 #################################################### - ANIMATIONS - ########################################################
@@ -177,14 +178,15 @@ health_length = 50
 smile_length = 50
 brain_length = 5
 space_counter = 0
+win_score = 0
 timeline = 0
 
 #Function that restart game
 def restart_game():
-    global health, brain, smile, timeline, hack_notify, gym_page, uni_page, menu_page, map_page, club_page, theatre_page, paused
-    health = 50
-    brain = 5
-    smile = 50
+    global health_length, brain_length, smile_length, timeline, hack_notify, gym_page, uni_page, menu_page, map_page, club_page, theatre_page, paused
+    health_length = 50
+    brain_length = 5
+    smile_length = 50
     timeline = 0
     hack_notify = False
     gym_page = False
@@ -248,6 +250,10 @@ while True:
 
                 if accept_button2.collidepoint(pos):
                     showing_result = False
+                    if win_hack:
+                        brain_length += win_score
+                        win_hack = False
+                    win_score = 0
 
                 if accept_button3.collidepoint(pos):
                     ill = False
@@ -319,7 +325,7 @@ while True:
         elif timeline == 2650:
             hack_notify = False
 
-        elif timeline == 2700:
+        elif timeline >= 2700:
             end_page = True
             main_page = False
 
@@ -358,22 +364,11 @@ while True:
             if res > 0:
                 notification.draw_text(screen, notification.win_text, notification.custom_font, BLACK, WIDTH - 400, HEIGHT - 230)
                 notification.draw_text(screen, notification.win_mess, notification.custom_font1, BLACK, WIDTH - 400, HEIGHT - 170)
-                notification.draw_text(screen, notification.win_mess1, notification.custom_font1, BLACK,
-                                    WIDTH - 400, HEIGHT - 130)
-                brain_length += res
+                win_score = res
+                win_hack = True
             else:
                 notification.draw_text(screen, notification.lose_text, notification.custom_font, BLACK, WIDTH - 400, HEIGHT - 230)
                 notification.draw_text(screen, notification.lose_mess, notification.custom_font1, BLACK, WIDTH - 400, HEIGHT - 170)
-                notification.draw_text(screen, notification.lose_mess1, notification.custom_font1, BLACK,
-                                    WIDTH - 400, HEIGHT - 130)
-                if brain_length < 15:
-                    pass
-                elif brain_length >= 15 and brain_length < 60:
-                    pass
-                elif brain_length >= 60 and brain_length < 90:
-                    pass
-                else:
-                    pass
             screen.blit(accept_img, accept_button2)
 
         if ill:
@@ -491,6 +486,10 @@ while True:
                     health_length -= 5
                     brain_length += 2
                     smile_length -= 5
+
+                if timeline >= 2700:
+                    end_page = True
+                    main_page = False
                 
                 screen.blit(heart_img, (15, 10))
                 screen.blit(smile_img, (15, 60))
@@ -618,6 +617,9 @@ while True:
                     
                 screen.blit(gym_background, (0,0))
                 timeline += 1
+                if timeline >= 2700:
+                    end_page = True
+                    main_page = False
                 screen.blit(heart_img, (15, 10))
                 screen.blit(smile_img, (15, 60))
                 screen.blit(brain_img, (15, 110))
@@ -745,6 +747,9 @@ while True:
 
                 screen.blit(theatre_bg, (0,0))
                 timeline += 1
+                if timeline >= 2700:
+                    end_page = True
+                    main_page = False
                 screen.blit(heart_img, (15, 10))
                 screen.blit(smile_img, (15, 60))
                 screen.blit(brain_img, (15, 110))
@@ -832,6 +837,9 @@ while True:
 
                 screen.blit(club_bg, (0,0))
                 timeline += 1
+                if timeline >= 2700:
+                    end_page = True
+                    main_page = False
                 screen.blit(heart_img, (15, 10))
                 screen.blit(smile_img, (15, 60))
                 screen.blit(brain_img, (15, 110))

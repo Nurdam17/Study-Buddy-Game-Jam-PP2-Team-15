@@ -8,7 +8,6 @@ def kps_game():
     WIDTH, HEIGHT = 1700, 1000
     
     SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Kps")
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
     FONT = pygame.font.Font(None, 36)

@@ -9,7 +9,6 @@ def run_letter_game():
 
     WIDTH, HEIGHT = 1700, 1000
     SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("LETTER")
 
     WHITE = (255, 255, 255)
     fr_index = 0
@@ -62,6 +61,7 @@ def run_letter_game():
         SCREEN.blit(score_text, (10, 80))
         damir.boxing(SCREEN, fr_index)
         fr_index = (fr_index + 1) % len(boxings)
+
 
         pygame.display.flip()
 

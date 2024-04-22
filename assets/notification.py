@@ -14,11 +14,9 @@ notification_mess1 = ("on Hackathon?")
 
 win_text = "My congratulations!"
 win_mess = ("You won this hackathon")
-win_mess1 = ("+8")
 
 lose_text = "Unfortunately"
 lose_mess = ("You lose")
-lose_mess1 = ("-4")
 
 ill_text = "Unfortunately"
 ill_mess = "You illed"
