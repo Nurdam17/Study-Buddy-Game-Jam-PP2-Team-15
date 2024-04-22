@@ -914,8 +914,6 @@ while True:
             text.display_text(f"HP : {health_length}", 70, BLACK, 650, 450, screen)
             text.display_text(f"Happiness : {smile_length}", 70, BLACK, 650, 570, screen)
             text.display_text(f"Knowledge : {brain_length}", 70, BLACK, 650, 690, screen)
-            text.display_text("You really study budy!", 60, 
-                              BLACK, 300, 900, screen)
             text.display_text("You really study budy!", 80, 
                               BLACK, 550, 800, screen)
         elif health_length >=70 and smile_length >= 70 and brain_length >= 65:
